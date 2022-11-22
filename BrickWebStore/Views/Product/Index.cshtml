@@ -1,0 +1,63 @@
+﻿@model IEnumerable<BrickWebStore.Models.Product>
+
+<div class="container p-3">
+    <div class="row p-4">
+        <div class="col-6">
+            <h2 class="text-primary">Product list</h2>
+        </div>
+    </div>
+    <div class="col-6 text-right">
+        <a asp-action="Upsert" class="btn btn-primary">
+            <i class="fa-solid fa-plus"></i> &nbsp; Create new product
+        </a>
+    </div>
+
+    <br /><br />
+
+    @if (Model.Count() > 0)
+    {
+        <table class="table table-bordered table table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th>
+                        Product name
+                    </th>
+                    <th>
+                        Price
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var m in Model)
+                {
+                    <tr>
+                        <td width="10%">@m.ProductName</td>
+                        <td width="10%">@m.ProductPrice</td>
+                        <td width="20%">@m.Category.CategoryName</td>
+                        <td width="20%">@m.ShortDesk</td>
+                        <td width="40%"><b>Store name:</b> @m.BrickStore.ShopName, <b>Store address:</b> @m.BrickStore.Address</td>
+                        <td class="test-center">
+                            <div class="w-75 btn-group" role="group">
+                                <a asp-route-Id="@m.Id" asp-action="Upsert" class="btn btn-primary margin mx-2">
+                                    <i class="fa-solid fa-pen-to-square"></i> &nbsp;
+                                </a>
+                                <a asp-route-Id="@m.Id" asp-action="Delete" class="btn btn-danger margin mx-2">
+                                    <i class="fa-solid fa-trash"></i> &nbsp;
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No protuct exists</p>
+    }
+
+</div>
+
+
+

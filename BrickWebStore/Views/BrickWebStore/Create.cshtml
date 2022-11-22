@@ -1,0 +1,42 @@
+﻿@model BrickWebStore.Models.BrickWebStoreModel
+
+<form method="post" asp-action="Create">
+    <div class="border p-3">
+        <div class="from-group row">
+            <h2 class="text-info pl-3">Add new Shop</h2>
+        </div>
+        <div class="row">
+            <div class="row">
+                <div class="col-8">
+                    <div class="from-group row">
+                        <div class="col-4">
+                            <label asp-for="ShopName"></label>
+                        </div>
+                        <div class="row-8">
+                            <input asp-for="ShopName" class="form-control" />
+                        </div>
+                        <div class="col-4">
+                            <label asp-for="Address"></label>
+                        </div>
+                        <div class="row-8">
+                            <input asp-for="Address" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="from-group row">
+                        <div class="col-8 offset-4 row">
+                            <div class="col">
+                                <input type="submit" class="btn btn-info w-100" value="Add"/>
+                            </div>
+                            <div class="col">
+                                <a asp-controller="BrickWebStore" asp-action="Index" class="btn btn-success w-100">
+                                    <i class="fa-solid fa-arrow-right-from-bracket"></i> &nbsp; Back to shops
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
