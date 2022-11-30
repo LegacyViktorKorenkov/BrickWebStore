@@ -1,15 +1,15 @@
 ﻿@model BrickWebStore.Models.BrickWebStoreModel
 
 <form method="post" asp-action="Create">
-    <div class="border p-3">
+    <div class="border p-3 bg-white">
         <div class="from-group row">
             <h2 class="text-info pl-3">Add new Shop</h2>
         </div>
         <div class="row">
             <div class="row">
                 <div class="col-8">
-                    <div class="from-group row">
-                        <div class="col-4">
+                    <div class="from-group row py-2">
+                        <div class="col-4 ">
                             <label asp-for="ShopName"></label>
                         </div>
                         <div class="row-8">
@@ -22,7 +22,7 @@
                             <input asp-for="Address" class="form-control" />
                         </div>
                     </div>
-                    <div class="from-group row">
+                    <div class="from-group row py-2">
                         <div class="col-8 offset-4 row">
                             <div class="col">
                                 <input type="submit" class="btn btn-info w-100" value="Add"/>

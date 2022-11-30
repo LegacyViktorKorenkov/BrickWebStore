@@ -1,4 +1,5 @@
-﻿@model BrickWebStore.Models.Product
+﻿@using BrickWebStore.Utility;
+@model BrickWebStore.Models.Product
 
 @{
     var title = "Delete Product";
@@ -6,13 +7,13 @@
 
 <form method="post">
     <input asp-for="Id" hidden />
-    <div class="border p-3">
+    <div class="border p-3 bg-white">
         <div class="form-group row">
             <h2 class="text-info pl-3">@title</h2>
         </div>
         <div class="row">
             <div class="col-8">
-                <div class="form-group row">
+                <div class="form-group row py-2">
                     <div class="col-4">
                         <label asp-for="ProductName"></label>
                     </div>
@@ -20,7 +21,7 @@
                         <input asp-for="ProductName" disabled class="form-control" />
                     </div>
                 </div>
-                <div class="form-group row">
+                <div class="form-group row py-2">
                     <div class="col-4">
                         <label asp-for="ProductPrice"></label>
                     </div>
@@ -28,15 +29,15 @@
                         <input asp-for="ProductPrice" disabled class="form-control" />
                     </div>
                 </div>
-                <div class="form-group row">
+                <div class="form-group row py-2">
                     <div class="col-4">
                         <label asp-for="ProductDescription"></label>
                     </div>
                     <div class="col-8">
-                        <textarea asp-for="ProductDescription" disabled class="form-control summernote"></textarea>
+                        <textarea asp-for="ProductDescription" class="form-control summernote"></textarea>
                     </div>
 
-                    <div class="form-group row">
+                    <div class="form-group row py-2">
                         <div class="col-4">
                             <label asp-for="Category.CategoryName"></label>
                         </div>
@@ -44,7 +45,7 @@
                             <input asp-for="Category.CategoryName" disabled class="form-control" />
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row py-2">
                         <div class="col-4">
                             <label asp-for="BrickStore.Address"></label>
                         </div>
@@ -52,7 +53,7 @@
                             <input asp-for="BrickStore.Address" disabled class="form-control" />
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row py-2">
                         <div class="col-8 offset-4 row">
 
                             <div class="col">

@@ -1,5 +1,9 @@
-using BrickWebStore.DataContext;
+using BrickWebStore.DataAccess.DataContext;
+using BrickWebStore.DataAccess.Repositories;
+using BrickWebStore.DataAccess.Repositories.Abstractions;
+using BrickWebStore.Utility;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,7 +12,15 @@ var services = builder.Services;
 services.AddDbContext<AppDbContext>(opt 
     => opt.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection")));
 
-services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<AppDbContext>();
+services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddDefaultTokenProviders()
+    .AddDefaultUI()
+    .AddEntityFrameworkStores<AppDbContext>();
+
+services.AddTransient<IEmailSender, EmailSender>();
+services.AddScoped<ICategotyRepository, CategotyRepository>();
+services.AddScoped<IBrickWebStoreRepository, BrickWebStoreRepository>();
+services.AddScoped<IProductRepository, ProductRepository>();
 
 services.AddHttpContextAccessor();
 services.AddSession(opt =>

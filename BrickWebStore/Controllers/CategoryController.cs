@@ -1,21 +1,25 @@
-﻿using BrickWebStore.DataContext;
+﻿using BrickWebStore.DataAccess.DataContext;
+using BrickWebStore.DataAccess.Repositories.Abstractions;
 using BrickWebStore.Models;
+using BrickWebStore.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BrickWebStore.Controllers
 {
+    [Authorize(Roles = WC.AdminRole)]
     public class CategoryController : Controller
     {
-        private readonly AppDbContext _db;
+        private readonly ICategotyRepository _categotyRepository;
 
-        public CategoryController(AppDbContext appDbContext)
+        public CategoryController(ICategotyRepository categotyRepository)
         {
-            _db = appDbContext;
+            _categotyRepository = categotyRepository;
         }
 
         public IActionResult Index()
         {
-            IEnumerable<Category> categories = _db.Category;
+            IEnumerable<Category> categories = _categotyRepository.GetAll();
 
             return View(categories);
         }
@@ -31,11 +35,11 @@ namespace BrickWebStore.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Category.Add(category);
+                _categotyRepository.Add(category);
 
                 try
                 {
-                    _db.SaveChanges();
+                    _categotyRepository.Save();
                 }
                 catch (Exception e)
                 {
@@ -59,7 +63,7 @@ namespace BrickWebStore.Controllers
             }
 
             //var obj = _db.Category.FirstOrDefault(x => x.Id == id);
-            var obj = _db.Category.Find(id);
+            var obj = _categotyRepository.Find(id.GetValueOrDefault());
 
             if (obj == null)
             {
@@ -74,11 +78,11 @@ namespace BrickWebStore.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Category.Update(category);
+                _categotyRepository.Update(category);
 
                 try
                 {
-                    _db.SaveChanges();
+                    _categotyRepository.Save();
                 }
                 catch (Exception e)
                 {
@@ -102,7 +106,7 @@ namespace BrickWebStore.Controllers
             }
 
             //var obj = _db.Category.FirstOrDefault(x => x.Id == id);
-            var obj = _db.Category.Find(id);
+            var obj = _categotyRepository.Find(id.GetValueOrDefault());
 
             if (obj == null)
             {
@@ -115,18 +119,18 @@ namespace BrickWebStore.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult DeletePost(int? id)
         {
-            var obj = _db.Category.FirstOrDefault(x => x.Id == id);
+            var obj = _categotyRepository.FirstOrDefault(x => x.Id == id);
 
             if (obj == null)
             {
                 return NotFound();
             }
 
-            _db.Category.Remove(obj);
+            _categotyRepository.Remove(obj);
 
             try
             {
-                _db.SaveChanges();
+                _categotyRepository.Save();
             }
             catch (Exception e)
             {

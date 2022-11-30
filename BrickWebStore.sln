@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrickWebStore", "BrickWebStore\BrickWebStore.csproj", "{25595307-9095-4291-BE1F-CC63F91EB283}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BrickWebStore", "BrickWebStore\BrickWebStore.csproj", "{25595307-9095-4291-BE1F-CC63F91EB283}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BrickWebStore.Models", "BrickWebStore.Models\BrickWebStore.Models.csproj", "{89D16C4E-D6BD-45EC-B282-8DEFBA385037}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BrickWebStore.Utility", "BrickWebStore.Utility\BrickWebStore.Utility.csproj", "{B50BFAD2-0B79-481C-B834-49B05FE28301}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrickWebStore.DataAccess", "BrickWebStore.DataAccess\BrickWebStore.DataAccess.csproj", "{99B98524-D205-418E-A199-0B46EBED6197}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{25595307-9095-4291-BE1F-CC63F91EB283}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25595307-9095-4291-BE1F-CC63F91EB283}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25595307-9095-4291-BE1F-CC63F91EB283}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89D16C4E-D6BD-45EC-B282-8DEFBA385037}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89D16C4E-D6BD-45EC-B282-8DEFBA385037}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89D16C4E-D6BD-45EC-B282-8DEFBA385037}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89D16C4E-D6BD-45EC-B282-8DEFBA385037}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B50BFAD2-0B79-481C-B834-49B05FE28301}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B50BFAD2-0B79-481C-B834-49B05FE28301}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B50BFAD2-0B79-481C-B834-49B05FE28301}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B50BFAD2-0B79-481C-B834-49B05FE28301}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99B98524-D205-418E-A199-0B46EBED6197}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99B98524-D205-418E-A199-0B46EBED6197}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99B98524-D205-418E-A199-0B46EBED6197}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99B98524-D205-418E-A199-0B46EBED6197}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

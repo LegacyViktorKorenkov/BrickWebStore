@@ -8,6 +8,7 @@
   </PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Mailjet.Api" Version="3.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="7.0.0" />
@@ -25,6 +26,12 @@
 
 	<ItemGroup>
 	  <Folder Include="wwwroot\Images\Product\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\BrickWebStore.DataAccess\BrickWebStore.DataAccess.csproj" />
+	  <ProjectReference Include="..\BrickWebStore.Models\BrickWebStore.Models.csproj" />
+	  <ProjectReference Include="..\BrickWebStore.Utility\BrickWebStore.Utility.csproj" />
 	</ItemGroup>
 
 </Project>

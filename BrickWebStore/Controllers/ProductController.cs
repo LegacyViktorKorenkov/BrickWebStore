@@ -1,30 +1,32 @@
-﻿using BrickWebStore.DataContext;
+﻿using BrickWebStore.DataAccess.DataContext;
 using BrickWebStore.Models;
-using BrickWebStore.ViewModels;
+using BrickWebStore.Utility;
+using BrickWebStore.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Packaging.Signing;
+using BrickWebStore.DataAccess.Repositories.Abstractions;
+using BrickWebStore.DataAccess.Repositories;
 
 namespace BrickWebStore.Controllers
 {
+    [Authorize(Roles = WC.AdminRole)]
     public class ProductController : Controller
     {
-        private readonly AppDbContext _db;
+        private readonly IProductRepository _productRepository;
         private readonly IWebHostEnvironment _env;
 
-        public ProductController(AppDbContext appDbContext,
+        public ProductController(IProductRepository productRepository,
             IWebHostEnvironment env)
         {
-            _db = appDbContext;
+            _productRepository = productRepository;
             _env = env;
         }
 
         public IActionResult Index()
         {
-            IEnumerable<Product> products = _db.Product
-                .Include(x => x.Category)
-                .Include(x => x.BrickStore);
+            IEnumerable<Product> products = _productRepository.GetAll(includProperties: "Category,BrickStore");
 
             return View(products);
         }
@@ -64,21 +66,13 @@ namespace BrickWebStore.Controllers
             ProductViewModel productViewModel = new ProductViewModel()
             {
                 Product = new Product(),
-                CategorySelectList = _db.Category.Select(x => new SelectListItem
-                {
-                    Text = x.CategoryName,
-                    Value = x.Id.ToString(),
-                }),
-                StoreAddressList = _db.BrickWebStoreModel.Select(x => new SelectListItem
-                {
-                    Text = $"Store name: {x.ShopName}, address: {x.Address}",
-                    Value = x.Id.ToString(),
-                })
+                CategorySelectList = _productRepository.GetAllDropdownList(WC.CategoryName),
+                StoreAddressList = _productRepository.GetAllDropdownList(WC.BrickStoreName),
             };
 
             if (id != null)
             {
-                var product = _db.Product.FirstOrDefault(x => x.Id == id);
+                var product = _productRepository.FirstOrDefault(x => x.Id == id);
 
                 if (product != null)
                 {
@@ -114,11 +108,11 @@ namespace BrickWebStore.Controllers
 
                     productViewModel.Product.ProductImage = $"{fileName}{extension}";
 
-                    _db.Product.Add(productViewModel.Product);
+                    _productRepository.Add(productViewModel.Product);
                 }
                 else
                 {
-                    var productObj = _db.Product.AsNoTracking().FirstOrDefault(x => x.Id == productViewModel.Product.Id);
+                    var productObj = _productRepository.FirstOrDefault(x => x.Id == productViewModel.Product.Id, isTracking: false);
 
                     if (filesCount > 0)
                     {
@@ -143,12 +137,12 @@ namespace BrickWebStore.Controllers
                         productViewModel.Product.ProductImage = productObj.ProductImage;
                     }
 
-                    _db.Product.Update(productViewModel.Product);
+                    _productRepository.Update(productViewModel.Product);
                 }
 
                 try
                 {
-                    _db.SaveChanges();
+                    _productRepository.Save();
                 }
                 catch (Exception e)
                 {
@@ -158,16 +152,8 @@ namespace BrickWebStore.Controllers
                 return RedirectToAction("Index");
             }
 
-            productViewModel.CategorySelectList = _db.Category.Select(x => new SelectListItem
-            {
-                Text = x.CategoryName,
-                Value = x.Id.ToString(),
-            });
-            productViewModel.StoreAddressList = _db.BrickWebStoreModel.Select(x => new SelectListItem
-            {
-                Text = $"Store name: {x.ShopName}, address: {x.Address}",
-                Value = x.Id.ToString(),
-            });
+            productViewModel.CategorySelectList = _productRepository.GetAllDropdownList(WC.CategoryName);
+            productViewModel.StoreAddressList = _productRepository.GetAllDropdownList(WC.BrickStoreName);
 
             return View(productViewModel);
         }
@@ -182,10 +168,7 @@ namespace BrickWebStore.Controllers
 
             //var obj = _db.Category.FirstOrDefault(x => x.Id == id);
             //product.Category = _db.Category.Find(product.CategoryId);
-            var product = _db.Product
-                .Include(x => x.Category)
-                .Include(s => s.BrickStore)
-                .FirstOrDefault(x => x.Id == id);
+            var product = _productRepository.FirstOrDefault(x => x.Id == id, includProperties: "Category,BrickStore");
 
             if (product == null)
             {
@@ -198,7 +181,7 @@ namespace BrickWebStore.Controllers
         [HttpPost, ValidateAntiForgeryToken, ActionName("Delete")]
         public IActionResult DeletePost(int? id)
         {
-            var product = _db.Product.FirstOrDefault(x => x.Id == id);
+            var product = _productRepository.FirstOrDefault(x => x.Id == id);
 
             if (product == null)
             {
@@ -212,11 +195,11 @@ namespace BrickWebStore.Controllers
                 System.IO.File.Delete(imagePath);
             }
 
-            _db.Product.Remove(product);
+            _productRepository.Remove(product);
 
             try
             {
-                _db.SaveChanges();
+                _productRepository.Save();
             }
             catch (Exception e)
             {

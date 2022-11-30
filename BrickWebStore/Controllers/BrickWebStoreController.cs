@@ -1,22 +1,24 @@
-﻿using BrickWebStore.DataContext;
+﻿using BrickWebStore.DataAccess.DataContext;
+using BrickWebStore.DataAccess.Repositories.Abstractions;
 using BrickWebStore.Models;
+using BrickWebStore.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
 namespace BrickWebStore.Controllers
 {
+    [Authorize(Roles = WC.AdminRole)]
     public class BrickWebStoreController : Controller
     {
-        private readonly AppDbContext _db;
+        private readonly IBrickWebStoreRepository _brickWebStoreRepository;
 
-        public BrickWebStoreController(AppDbContext dbContext)
+        public BrickWebStoreController(IBrickWebStoreRepository brickWebStoreRepository)
         {
-            _db = dbContext;
+            _brickWebStoreRepository = brickWebStoreRepository;
         }
 
         public IActionResult Index()
         {
-            IEnumerable<BrickWebStoreModel> stores = _db.BrickWebStoreModel;
+            IEnumerable<BrickWebStoreModel> stores = _brickWebStoreRepository.GetAll();
 
             return View(stores);
         }
@@ -30,11 +32,11 @@ namespace BrickWebStore.Controllers
         [HttpPost]
         public IActionResult Create(BrickWebStoreModel brickWebStoreModel)
         {
-            _db.BrickWebStoreModel.Add(brickWebStoreModel);
+            _brickWebStoreRepository.Add(brickWebStoreModel);
 
             try
             {
-                _db.SaveChanges();
+                _brickWebStoreRepository.Save();
             }
             catch (Exception e)
             {
@@ -52,7 +54,7 @@ namespace BrickWebStore.Controllers
                 return NotFound();
             }
 
-            var obj = _db.BrickWebStoreModel.FirstOrDefault(x => x.Id == id);
+            var obj = _brickWebStoreRepository.FirstOrDefault(x => x.Id == id);
             
             if(obj == null)
             {
@@ -67,11 +69,11 @@ namespace BrickWebStore.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.BrickWebStoreModel.Update(brickModel);
+                _brickWebStoreRepository.Update(brickModel);
 
                 try
                 {
-                    _db.SaveChanges();
+                    _brickWebStoreRepository.Save();
 
                 }
                 catch (Exception e)
@@ -95,7 +97,7 @@ namespace BrickWebStore.Controllers
                 return NotFound();
             }
 
-            var obj = _db.BrickWebStoreModel.FirstOrDefault(x => x.Id == id);
+            var obj = _brickWebStoreRepository.FirstOrDefault(x => x.Id == id);
 
             if (obj == null)
             {
@@ -108,17 +110,17 @@ namespace BrickWebStore.Controllers
         [HttpPost]
         public IActionResult DeletePost(int? id)
         {
-            var obj = _db.BrickWebStoreModel.FirstOrDefault(x => x.Id == id);
+            var obj = _brickWebStoreRepository.FirstOrDefault(x => x.Id == id);
             if(obj == null)
             {
                 return NotFound();
             }
 
-            _db.BrickWebStoreModel.Remove(obj);
+            _brickWebStoreRepository.Remove(obj);
 
             try
             {
-                _db.SaveChanges();
+                _brickWebStoreRepository.Save();
 
             }
             catch (Exception e)
